@@ -1,0 +1,32 @@
+    
+.card {
+    transform: translateY(15vh);
+    width: 25rem;
+    margin: 0 auto;
+  
+    .card-header {
+      padding: 0;
+      border: none;
+    }
+  
+    .nav,
+    .nav-tabs,
+    .nav-link,
+    .nav-link.active {
+      border: none;
+    }
+  
+    .nav-link:not(.active) {
+      color: white;
+      background: #555;
+    }
+  
+    li {
+      width: 50%;
+    }
+    
+    .card-body {
+      width: 25rem;
+      text-align:left;
+    }
+  }
