@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Route, Switch, NavLink} from 'react-router-dom';
 
-import Login from './../../components/login/Login';
+import LoginWithUserContext from './../../components/login/Login';
 import Register from './../../components/register/Register';
 
 import './Authentication.scss';
 
 const Authentication =(props)=>{
-
+        
         const {path} = props.match;
         return(         
             <div className="card text-center custom-shadow">
@@ -23,7 +23,7 @@ const Authentication =(props)=>{
             </div>
             <div className="card-body">
                 {
-                    path ==='/login'? <Login/> : <Register/>
+                    path ==='/login'? <LoginWithUserContext/> : <Register/>
                 }
             </div>
             </div>

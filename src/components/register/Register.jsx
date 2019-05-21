@@ -1,74 +1,101 @@
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 import Input from '../common/Input';
 
-import inputValidation from '../../utils/inputValidations';
+import {validateInput, validateForm} from '../../utils/formValidations';
+import {popUpError, popUpSuccess} from '../../utils/popUpMessageHandler';
+import UserService from './../../services/userService';
+
+const defaultInputs = {
+    username:'',
+    email:'',
+    password:'',
+    confirmPassword:''
+}
 
 class Register extends Component{
     constructor(props){
         super(props);
 
         this.state = {
-            userName:'',
-            email:'',
-            password:'',
-            confirmPassword:'',
-            errors:{
-                userName:'',
-                email:'',
-                password:'',
-                confirmPassword:''
-            }
+            data:{...defaultInputs},
+            errors:{...defaultInputs},
+            isFormValid:false,
+            redirectToLogin:false
         }
     }
 
-    handleSubmit = (ev)=>{
+    static userService = new UserService();
+
+    handleRegister = (ev)=>{
         ev.preventDefault();
-        console.dir(this.state)
+        const userData = {...this.state.data};
+        delete userData.confirmPassword;
+        Register.userService.register(userData)
+            .then(res=>{
+                if(res.error){
+                    popUpError(res.description)
+                }else{
+                    popUpSuccess('Registration successful! You can login now.');
+                    this.setState({redirectToLogin:true})
+                }
+            })
+            .catch(err=>{
+                popUpError('Sorry something went wrong with the server.')
+                console.log(err)
+            })
     }
 
     handleInputChange = (ev)=>{
         const {name, value}=ev.target;
 
-        this.setState({
-            [name]:value
-        })
-
-    }
-
-    validateInputOnBlur =(name, value)=>{
-        this.setState({
-            errors:{
-                [name]:inputValidation(name, value)
+        this.setState((prevState)=>({
+            data:{
+                ...prevState.data,
+                [name]:value,
             }
-        })
+        }))
     }
 
-    clearErrorsOnFocus=()=>{
+    validateInputOnBlur =(name, value, required, other)=>{
         this.setState({
             errors:{
-                userName:'',
-                email:'',
-                password:'',
-                confirmPassword:''
+                [name]:validateInput(name, value, required, other)
+            }
+        },() => this.setState({
+            isFormValid:validateForm(this.state.errors, this.state.data)
+        }))
+    }
+
+    clearErrorsOnFocus=(name)=>{
+        this.setState({
+            errors:{
+                [name]:'',
             }
         })
     }
 
     render(){
-        const {userName, email, password, confirmPassword, errors} = this.state;
+        const {data, errors, isFormValid, redirectToLogin} = this.state;
+        const {username, email, password, confirmPassword} = data;
+        if(redirectToLogin){
+            return(
+                <Redirect to='login'/>
+            )
+        }
         return(
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleRegister}>
                 <Input
                     label="User Name"
                     type="text"
-                    id="userName"
-                    name="userName"
-                    value={userName}
+                    id="username"
+                    name="username"
+                    value={username}
                     handleInputChange={this.handleInputChange}
-                    validateInputOnBlur={()=>this.validateInputOnBlur('userName', userName)}
-                    clearErrorsOnFocus={this.clearErrorsOnFocus}
-                    isValid={!errors.userName}
-                    errorMsg={errors.userName}
+                    validateInputOnBlur={()=>this.validateInputOnBlur('username', username, true)}
+                    clearErrorsOnFocus={()=>this.clearErrorsOnFocus('username')}
+                    isValid={!errors.username}
+                    errorMsg={errors.username}
                 />
                 <Input
                     label="Email"
@@ -78,7 +105,7 @@ class Register extends Component{
                     value={email}
                     handleInputChange={this.handleInputChange}
                     validateInputOnBlur={()=>this.validateInputOnBlur('email', email)}
-                    clearErrorsOnFocus={this.clearErrorsOnFocus}
+                    clearErrorsOnFocus={()=>this.clearErrorsOnFocus('email')}
                     isValid={!errors.email}
                     errorMsg={errors.email}
                 />
@@ -89,8 +116,8 @@ class Register extends Component{
                     name="password"
                     value={password}
                     handleInputChange={this.handleInputChange}
-                    validateInputOnBlur={()=>this.validateInputOnBlur('password', password)}
-                    clearErrorsOnFocus={this.clearErrorsOnFocus}
+                    validateInputOnBlur={()=>this.validateInputOnBlur('password', password, true)}
+                    clearErrorsOnFocus={()=>this.clearErrorsOnFocus('password')}
                     isValid={!errors.password}
                     errorMsg={errors.password}
                 />
@@ -101,13 +128,13 @@ class Register extends Component{
                     name="confirmPassword"
                     value={confirmPassword}
                     handleInputChange={this.handleInputChange}
-                    validateInputOnBlur={()=>this.validateInputOnBlur('confirmPassword', confirmPassword)}
-                    clearErrorsOnFocus={this.clearErrorsOnFocus}
+                    validateInputOnBlur={()=>this.validateInputOnBlur('confirmPassword', confirmPassword, true, {password})}
+                    clearErrorsOnFocus={()=>this.clearErrorsOnFocus('confirmPassword')}
                     isValid={!errors.confirmPassword}
                     errorMsg={errors.confirmPassword}
                 />
                 <div className="form-group text-center">
-                    <button className="btn btn-primary" type="submit" >Register</button>
+                    <button className="btn btn-primary" type="submit" disabled={!isFormValid} >Register</button>
                 </div>
             </form>
         );

@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { Route, Switch} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import Home from './views/home/Home';
+import HomeWithUserContext from './views/home/Home';
 import Authentication from './views/authentication/Authentication';
 import NotFound from './views/not-found/NotFound';
 
@@ -13,14 +15,19 @@ class App extends Component {
     super(props);
 
     this.state ={
-      user:defaultUserState
+      user:{
+        ...defaultUserState,
+        updateUser:this.updateUser
+      }
     }
   }
 
-   updateUser=(data)=>{
-     this.setState({
-       user:data
-     })
+   updateUser=(data, cb)=>{
+     this.setState((prevState)=>({
+      user:{
+        ...prevState.user,
+        ...data}
+    }), cb)
    }
 
   render(){
@@ -28,13 +35,13 @@ class App extends Component {
     return (
       <div className="App">
       <UserProvider value={user}>
-        <Switch>
-          <Route exact path="/" component={Home}/>
-          <Route path='/login' render={(props)=>(<Authentication {...props} type="login"></Authentication>)}/>
-          <Route path='/register' render={(props)=>(<Authentication {...props} type="register"></Authentication>)}/>
-          <Route exact path="/" component={Home}/>
-          <Route component={NotFound}/>
-        </Switch>
+      <Switch>
+        <Route exact path="/" component={HomeWithUserContext}/>
+        <Route path='/login' render={(props)=>(<Authentication {...props} type="login"></Authentication>)}/>
+        <Route path='/register' render={(props)=>(<Authentication {...props} type="register"></Authentication>)}/>
+        <Route component={NotFound}/>
+      </Switch>
+      <ToastContainer/>
       </UserProvider>
       </div>
     );

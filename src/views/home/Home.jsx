@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import {UserConsumer} from '../../components/contexts/userContext';
 
 
 const Home =(props)=> {
-    const {isLogged}=props;
+    const {username}=props;
+    const isLogged = !!username;
     if(isLogged === true){
         return (
             <div className="jumbotron bg-light translateY-13vh custom-shadow w-75 ml-auto mr-auto">
-            <h1 className="display-4 font-weight-normal">Welcome!</h1>
+            <h1 className="display-4 font-weight-normal">Welcome {username}!</h1>
             <p className="lead">Start planning your next trip or check what you have already in store from the navigation bar above.</p>
           </div>
         )
@@ -25,4 +27,14 @@ const Home =(props)=> {
     );
 }
 
-export default Home;
+const HomeWithUserContext =(props)=>{
+    return(
+        <UserConsumer>
+            {
+                ({username})=>(<Home {...props} username={username}/>)
+            }
+        </UserConsumer>
+    )
+}
+
+export default HomeWithUserContext;

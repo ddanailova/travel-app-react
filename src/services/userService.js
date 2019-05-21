@@ -49,7 +49,8 @@ class UserService {
       return isAdmin;
     }
 
-    storeUserData=(body, isAdmin)=>{
+    storeUserData=(body)=>{
+      const isAdmin = this.isUserAdmin(body);
       localStorage.setItem('authtoken', body._kmd.authtoken);
       localStorage.setItem('userId', body._id);
       localStorage.setItem('username', body.username);
