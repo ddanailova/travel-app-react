@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {UserConsumer} from '../../components/contexts/userContext';
 
+import './Home.scss';
 
 const Home =(props)=> {
     const {username}=props;

@@ -31,24 +31,22 @@ class Login extends Component{
         const {updateUser}=this.props;
         const userData = {...this.state.data};
         delete userData.confirmPassword;
-        Login.userService.login(userData)
-            .then(res=>{
-                if(res.error){
-                    popUpError(res.description)
-                }else{
-                    popUpSuccess(`Login successful! Welcome ${res.username}`);
-                    Login.userService.storeUserData(res)
-                    updateUser({
-                        username:res.username,
-                        userId:res._id,
-                        isAdmin:Login.userService.isUserAdmin(res)
-                    },this.setState({redirectToHome:true}));
-                }
-            })
-            .catch(err=>{
-                popUpError('Sorry something went wrong with the server.')
-                console.log(err)
-            })
+        Login.userService.login(userData).then(res=>{
+            if(res.error){
+                popUpError(res.description)
+            }else{
+                popUpSuccess(`Login successful! Welcome ${res.username}`);
+                Login.userService.storeUserData(res);
+                updateUser({
+                    username:res.username,
+                    userId:res._id,
+                    isAdmin:Login.userService.isUserAdmin(res)
+                },this.setState({redirectToHome:true}));
+            }
+        }).catch(err=>{
+            popUpError('Sorry something went wrong with the server.')
+            console.log(err)
+        })
     }
 
     handleInputChange = (ev)=>{

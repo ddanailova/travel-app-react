@@ -1,14 +1,21 @@
-import React, {Component} from 'react';
+import React, {Component, lazy, Suspense} from 'react';
 import { Route, Switch} from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import HomeWithUserContext from './views/home/Home';
-import Authentication from './views/authentication/Authentication';
-import NotFound from './views/not-found/NotFound';
+import NavigationWithUserContext from './components/common/Navigation';
+import Footer from './components/common/Footer';
+import {AdminRoute, UserRoute, AnonimusRoute} from './components/common/AuthorizedRout';
+import LoadingSpinner from './components/common/LoadingSpinner/LoadingSpinner';
 
-import {UserProvider, defaultUserState} from './components/contexts/userContext'
+
+import {UserProvider, defaultUserState} from './components/contexts/userContext';
 import './App.css';
+
+import NotFound from './views/not-found/NotFound';
+const HomeWithUserContext = lazy(()=>import('./views/home/Home'));
+const Authentication = lazy(()=>import('./views/authentication/Authentication'));
+
 
 class App extends Component {
   constructor(props){
@@ -32,17 +39,27 @@ class App extends Component {
 
   render(){
     const {user} = this.state;
+    const {username} = user;
     return (
       <div className="App">
-      <UserProvider value={user}>
-      <Switch>
-        <Route exact path="/" component={HomeWithUserContext}/>
-        <Route path='/login' render={(props)=>(<Authentication {...props} type="login"></Authentication>)}/>
-        <Route path='/register' render={(props)=>(<Authentication {...props} type="register"></Authentication>)}/>
-        <Route component={NotFound}/>
-      </Switch>
-      <ToastContainer/>
-      </UserProvider>
+        <UserProvider value={user}>
+        {
+          username ? <NavigationWithUserContext/> : null
+        }
+        <Suspense fallback={<LoadingSpinner/>}>
+          <Switch>
+            <Route exact path="/" component={HomeWithUserContext}/>
+            <Route exact path="/home" component={HomeWithUserContext}/>
+            <AnonimusRoute path='/login' render={(props)=>(<Authentication {...props} type="login"></Authentication>)}/>
+            <AnonimusRoute path='/register' render={(props)=>(<Authentication {...props} type="register"></Authentication>)}/>
+            <Route component={NotFound}/>
+        </Switch>
+        </Suspense>
+        {
+          username ? <Footer/> : null
+        }
+        <ToastContainer/>
+        </UserProvider>
       </div>
     );
   }
