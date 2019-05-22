@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import NavigationWithUserContext from './components/common/Navigation';
 import Footer from './components/common/Footer';
 import {AdminRoute, UserRoute, AnonimusRoute} from './components/common/AuthorizedRout';
-import LoadingSpinner from './components/common/LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from './components/common/loading-spinner/LoadingSpinner';
 
 
 import {UserProvider, defaultUserState} from './components/contexts/userContext';
@@ -15,6 +15,8 @@ import './App.css';
 import NotFound from './views/not-found/NotFound';
 const HomeWithUserContext = lazy(()=>import('./views/home/Home'));
 const Authentication = lazy(()=>import('./views/authentication/Authentication'));
+const CreateTrip =lazy(()=>import('./views/create-trip/CreateTrip.jsx'));
+const EditTrip =lazy(()=>import('./views/edit-trip/EditTrip.jsx'));
 
 
 class App extends Component {
@@ -52,6 +54,8 @@ class App extends Component {
             <Route exact path="/home" component={HomeWithUserContext}/>
             <AnonimusRoute path='/login' render={(props)=>(<Authentication {...props} type="login"></Authentication>)}/>
             <AnonimusRoute path='/register' render={(props)=>(<Authentication {...props} type="register"></Authentication>)}/>
+            <UserRoute path='/trip/create' render={(props)=>(<CreateTrip/>)}/>
+            <UserRoute path='/trip/edit/:id' render={(props)=>(<EditTrip/>)}/>
             <Route component={NotFound}/>
         </Switch>
         </Suspense>

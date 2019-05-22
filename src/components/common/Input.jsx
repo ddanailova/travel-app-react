@@ -1,11 +1,44 @@
 import React from 'react';
 
 const Input = (props)=>{
-    const { label, type, id, name, value, handleInputChange, isValid, errorMsg, validateInputOnBlur, clearErrorsOnFocus}=props
+    const { label, type, id, name, value, example, handleInputChange, isValid, errorMsg, validateInputOnBlur, clearErrorsOnFocus, formGroupClasses}=props
     const validityClass = isValid ? 'form-control' : 'form-control is-invalid'
+    if(type === 'checkbox'){
+        return (
+            <div className="form-group">
+                <div className="form-check">
+                    <input 
+                        className="form-check-input" 
+                        type={type}
+                        id={id}
+                        name={name}
+                        value={value}
+                        onChange={handleInputChange}
+                    />
+                    <label className="form-check-label" htmlFor={id}>
+                    {label}
+                    </label>
+                </div>
+            </div>
+        )
+    }else if(type==='textarea'){
+        return (
+            <div className="form-group">
+            <label htmlFor={id}>{label} <span className="font-italic text-secondary">{example}</span></label>
+                <textarea 
+                    className="form-control" 
+                    id={id} 
+                    rows="3"
+                    name={name}
+                    onChange={handleInputChange}
+                    defaultValue={value}/>
+            </div>
+        )
+    }
+
     return(
-        <div className="form-group">
-        <label htmlFor="email">{label}</label>
+        <div className={`form-group ${formGroupClasses}`}>
+        <label htmlFor={id}>{label}</label>
         <input 
             className={validityClass} 
             type={type} 

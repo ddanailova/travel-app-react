@@ -1,0 +1,11 @@
+.card {
+    text-align: left;
+}
+.flex-row{
+    flex-direction: row;
+
+    .wrapper,
+    .card-header{
+        flex:1 0 50%;
+    }
+}

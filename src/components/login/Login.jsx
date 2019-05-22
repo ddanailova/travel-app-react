@@ -63,6 +63,7 @@ class Login extends Component{
     validateInputOnBlur =(name, value, required, other)=>{
         this.setState({
             errors:{
+                ...this.state.errors,
                 [name]:validateInput(name, value, required, other)
             }
         },() => this.setState({
@@ -73,6 +74,7 @@ class Login extends Component{
     clearErrorsOnFocus=(name)=>{
         this.setState({
             errors:{
+                ...this.state.errors,
                 [name]:'',
             }
         })

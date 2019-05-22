@@ -60,6 +60,7 @@ class Register extends Component{
     validateInputOnBlur =(name, value, required, other)=>{
         this.setState({
             errors:{
+                ...this.state.errors,
                 [name]:validateInput(name, value, required, other)
             }
         },() => this.setState({
@@ -70,6 +71,7 @@ class Register extends Component{
     clearErrorsOnFocus=(name)=>{
         this.setState({
             errors:{
+                ...this.state.errors,
                 [name]:'',
             }
         })
