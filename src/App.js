@@ -32,6 +32,7 @@ class App extends Component {
   }
 
    updateUser=(data, cb)=>{
+     console.log('update state')
      this.setState((prevState)=>({
       user:{
         ...prevState.user,

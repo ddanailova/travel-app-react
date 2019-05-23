@@ -8,19 +8,14 @@ class TripForm extends Component{
         super(props);
     }
 
-    handlePreview=(ev)=>{
-        ev.preventDefault();
-        const {data, errors}=this.props;
-        console.log('errors: ',errors);
-        console.log('data: ', data)
-    }
+
     render(){
-        const {actionType,handleInputChange,validateInputOnBlur,clearErrorsOnFocus, errors, data, isFormValid}=this.props;
+        const {actionType,handleInputChange, errors, data, isFormValid, clearErrorsOnFocus}=this.props;
         const {destination, startDate, endDate, image, places, privacy}=data;
         return (
             <div className="col-4 bg-light custom-box mr-5">
                 <h1 className="text-center pb-3 text-capitalize">{actionType} Trip</h1>
-                <form onSubmit={this.handlePreview}>
+                <form>
                     <Input
                         label="Destination"
                         type="text"
@@ -28,7 +23,6 @@ class TripForm extends Component{
                         name="destination"
                         value={destination}
                         handleInputChange={handleInputChange}
-                        validateInputOnBlur={()=>validateInputOnBlur('destination', destination, true)}
                         clearErrorsOnFocus={()=>clearErrorsOnFocus('destination')}
                         isValid={!errors.destination}
                         errorMsg={errors.destination}
@@ -41,7 +35,6 @@ class TripForm extends Component{
                             name="startDate"
                             value={startDate}
                             handleInputChange={handleInputChange}
-                            validateInputOnBlur={()=>validateInputOnBlur('startDate', startDate, true)}
                             clearErrorsOnFocus={()=>clearErrorsOnFocus('startDate')}
                             isValid={!errors.startDate}
                             errorMsg={errors.startDate}
@@ -54,7 +47,6 @@ class TripForm extends Component{
                             name="endDate"
                             value={endDate}
                             handleInputChange={handleInputChange}
-                            validateInputOnBlur={()=>validateInputOnBlur('endDate', endDate,true)}
                             clearErrorsOnFocus={()=>clearErrorsOnFocus('endDate')}
                             isValid={!errors.endDate}
                             errorMsg={errors.endDate}
@@ -68,7 +60,6 @@ class TripForm extends Component{
                         name="image"
                         value={image}
                         handleInputChange={handleInputChange}
-                        validateInputOnBlur={()=>validateInputOnBlur('image', image)}
                         clearErrorsOnFocus={()=>clearErrorsOnFocus('image')}
                         isValid={!errors.image}
                         errorMsg={errors.image}
@@ -83,16 +74,16 @@ class TripForm extends Component{
                         handleInputChange={handleInputChange}
                     />
                     <Input
-                        label="Keep privacy"
+                        label="Keep private"
                         type="checkbox"
                         id="privacy"
                         name="privacy"
-                        value={image}
+                        value={privacy}
                         handleInputChange={handleInputChange}
                     />
-                    <div className="form-group text-center">
+                    {/*<div className="form-group text-center">
                         <button type="submit" className="btn btn-primary ml-auto mr-auto">Preview</button>
-                    </div>
+                    </div>*/}
                 </form>
             </div>
         )

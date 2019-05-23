@@ -24,30 +24,49 @@ class FormPreviewContainer extends Component {
         this.state = {
             data:{...defaultInputs},
             errors:{...defaultInputs},
-            isFormValid:false,
-            redirectToHome:false
+            redirectToHome:false,
+            isFormValid:false
         }
     }
-    handleInputChange = (ev)=>{
-        const {name, value}=ev.target;
-
+    updateStateParam = (pram, data, cb)=>{
+        console.log('in updateStateParam', this.state.isFormValid);
         this.setState((prevState)=>({
-            data:{
-                ...prevState.data,
-                [name]:value,
-            }
-        }))
+         [pram]:data}), cb)
+    }
+    updateStateArrayParam = (pram, data, cb)=>{
+        this.setState((prevState)=>({
+         [pram]:{
+           ...prevState[pram],
+           ...data}
+       }), cb)
     }
 
-    validateInputOnBlur =(name, value, required, other)=>{
-        this.setState({
-            errors:{
-                ...this.state.errors,
-                [name]:validateInput(name, value, required, other)
-            }
-        },() => this.setState({
-            isFormValid:validateForm(this.state.errors, this.state.data)
-        }))
+
+    handleInputChange = (ev)=>{
+        const {name, value, checked}=ev.target;
+        if(name==='places'){
+            this.setState((prevState)=>({
+                data:{
+                    ...prevState.data,
+                    [name]:value.split(/\s*,\s*/),
+                }
+            }))
+        }else if(name==='privacy'){
+            this.setState((prevState)=>({
+                data:{
+                    ...prevState.data,
+                    [name]:checked
+                }
+            }))
+        }else{
+            this.setState((prevState)=>({
+                data:{
+                    ...prevState.data,
+                    [name]:value,
+                }
+            }))
+        }
+
     }
 
     clearErrorsOnFocus=(name)=>{
@@ -69,13 +88,19 @@ class FormPreviewContainer extends Component {
                     <TripForm 
                         actionType={actionType}
                         handleInputChange={this.handleInputChange}
-                        validateInputOnBlur={this.validateInputOnBlur}
-                        clearErrorsOnFocus={this.clearErrorsOnFocus}
                         errors={errors}
                         data={data}
                         isFormValid={isFormValid}
+                        clearErrorsOnFocus={this.clearErrorsOnFocus}
                     />
-                    <Preview actionType={actionType}/>
+                    <Preview 
+                        actionType={actionType}
+                        updateStateArrayParam={this.updateStateArrayParam}
+                        updateStateParam={this.updateStateParam}
+                        isFormValid={this.state.isFormValid}
+                        data={data}
+                        errors={errors}
+                    />
                     <div className="col-2"></div>
                 </div>
             </div>

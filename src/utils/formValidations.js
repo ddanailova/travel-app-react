@@ -6,11 +6,11 @@ const imageUrlRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
       const isTextValueRequired = typeof value === 'string' && value.trim().length <= 0 && required;
       const isValueRequired = typeof value !== 'string' && value && required;
      if(isTextValueRequired){
-        return 'This field is required!';
+        return true;
      }
 
      if(isValueRequired){
-      return 'This field is required!';
+      return true;
       }
       
      switch(name){
@@ -24,30 +24,37 @@ const imageUrlRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
         return 'Passwords should match! Try again';
         case 'image':if(imageUrlRegex.test(value)) return null;
         return 'Please provide a valid URL starting with http and ending with jpg, gif or png.';
-        default: return;
+        default: return null;
      }
 
 }
 
+//TODO fix the form validation
 const validateForm = (errors, data)=>{
-   let paramValueCount = 0;
-   for (const param in data) {
-      if(data[param]){
-         paramValueCount++;
+   for (const inputName in errors) {
+      if(errors[inputName]){
+         return false;
       }
+      return true;
    }
+   // let paramValueCount = 0;
+   // for (const param in data) {
+   //    if(data[param]){
+   //       paramValueCount++;
+   //    }
+   // }
 
-   if(paramValueCount === Object.keys(data).length){
-      let errorCount = 0;
-      for (const error in errors) {
-         if(errors[error]){
-            errorCount++;
-         }
-      }
-      return !errorCount;
-   }
+   // if(paramValueCount === Object.keys(data).length){
+   //    let errorCount = 0;
+   //    for (const error in errors) {
+   //       if(errors[error]){
+   //          errorCount++;
+   //       }
+   //    }
+   //    return !errorCount;
+   // }
 
-   return false;
+   // return false;
 }
 
 export {validateInput, validateForm};

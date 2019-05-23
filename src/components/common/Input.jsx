@@ -12,8 +12,8 @@ const Input = (props)=>{
                         type={type}
                         id={id}
                         name={name}
-                        value={value}
-                        onChange={handleInputChange}
+                        defaultChecked={value}
+                        onClick ={handleInputChange}
                     />
                     <label className="form-check-label" htmlFor={id}>
                     {label}
