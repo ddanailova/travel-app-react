@@ -56,7 +56,7 @@ class Login extends Component{
                 ...prevState.data,
                 [name]:value,
             }
-        }), this.setState((prevState)=>({
+        }),()=>this.setState((prevState)=>({
             errors:{
                 ...prevState.errors,
                 [name]:validateInput(name, value, required, other)

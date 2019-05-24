@@ -50,7 +50,7 @@ const TripForm =(props)=>{
                     id="image"
                     name="image"
                     value={image}
-                    handleInputChange={(ev)=>handleInputChange(ev, true)}
+                    handleInputChange={(ev)=>handleInputChange(ev)}
                     isValid={!errors.image}
                     errorMsg={errors.image}
                 />
