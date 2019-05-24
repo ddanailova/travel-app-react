@@ -1,11 +1,10 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 
-import {validateInput, validateForm} from '../../../utils/formValidations.js';
-import {popUpError, popUpSuccess} from '../../../utils/popUpMessageHandler';
+import {validateInput, validateForm} from './../../utils/formValidations.js';
 
-import TripForm from './../../trip-form/TripForm';
-import Preview from './../../preview/Preview';
+import TripForm from './../trip-form/TripForm';
+import Preview from './../preview/Preview';
 
 
 const defaultInputs = {
@@ -17,22 +16,30 @@ const defaultInputs = {
     privacy:false
 }
 
+const defaultErrorFields = {
+    destination:'',
+    image:'',
+    startDate:'',
+    endDate:'',
+}
+
 class FormPreviewContainer extends Component {
     constructor(props){
         super(props);
 
         this.state = {
             data:{...defaultInputs},
-            errors:{...defaultInputs},
+            errors:{...defaultErrorFields},
             redirectToHome:false,
             isFormValid:false
         }
     }
+
     updateStateParam = (pram, data, cb)=>{
-        console.log('in updateStateParam', this.state.isFormValid);
-        this.setState((prevState)=>({
-         [pram]:data}), cb)
+        this.setState({
+         [pram]:data}, cb)
     }
+
     updateStateArrayParam = (pram, data, cb)=>{
         this.setState((prevState)=>({
          [pram]:{
@@ -42,7 +49,7 @@ class FormPreviewContainer extends Component {
     }
 
 
-    handleInputChange = (ev)=>{
+    handleInputChange = (ev, required, other)=>{
         const {name, value, checked}=ev.target;
         if(name==='places'){
             this.setState((prevState)=>({
@@ -64,40 +71,41 @@ class FormPreviewContainer extends Component {
                     ...prevState.data,
                     [name]:value,
                 }
-            }))
+            }), this.setState((prevState)=>({
+                errors:{
+                    ...prevState.errors,
+                    [name]:validateInput(name, value, required, other)
+                }
+            }),() => this.setState((prevState)=>({
+                isFormValid:validateForm(prevState.errors, prevState.data)
+            }))))
         }
-
     }
 
-    clearErrorsOnFocus=(name)=>{
-        this.setState({
-            errors:{
-                ...this.state.errors,
-                [name]:'',
-            }
-        })
-    }
 
     render(){
         const {actionType}=this.props;
-        const {errors, data, isFormValid} =this.state;
+        const {errors, data, isFormValid, redirectToHome} =this.state;
+        
+        if(redirectToHome){
+            return(<Redirect to='/'/>)
+        }
         return(
             <div className="container">
                 <div className="row translateY-13vh pb-5">
-                    <div className="col-2"></div>
+                <div className="col-2"></div>
                     <TripForm 
                         actionType={actionType}
                         handleInputChange={this.handleInputChange}
                         errors={errors}
                         data={data}
                         isFormValid={isFormValid}
-                        clearErrorsOnFocus={this.clearErrorsOnFocus}
                     />
                     <Preview 
                         actionType={actionType}
                         updateStateArrayParam={this.updateStateArrayParam}
                         updateStateParam={this.updateStateParam}
-                        isFormValid={this.state.isFormValid}
+                        isFormValid={isFormValid}
                         data={data}
                         errors={errors}
                     />

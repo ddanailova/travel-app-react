@@ -1,8 +1,9 @@
 import React from 'react';
 
 const Input = (props)=>{
-    const { label, type, id, name, value, example, handleInputChange, isValid, errorMsg, validateInputOnBlur, clearErrorsOnFocus, formGroupClasses}=props
-    const validityClass = isValid ? 'form-control' : 'form-control is-invalid'
+    const { label, type, id, name, value, example, handleInputChange, isValid, errorMsg, validateInputOnBlur, clearErrorsOnFocus, formGroupClasses:extraFormGroupClasses}=props;
+    const validityClass = isValid ? 'form-control' : 'form-control is-invalid';
+    const formGroupClasses = extraFormGroupClasses ? `form-group ${extraFormGroupClasses}` : 'form-group';
     if(type === 'checkbox'){
         return (
             <div className="form-group">
@@ -37,7 +38,7 @@ const Input = (props)=>{
     }
 
     return(
-        <div className={`form-group ${formGroupClasses}`}>
+        <div className={formGroupClasses}>
         <label htmlFor={id}>{label}</label>
         <input 
             className={validityClass} 

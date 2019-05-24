@@ -4,7 +4,7 @@ import Input from '../common/Input';
 import {UserConsumer} from '../contexts/userContext';
 
 import {validateInput, validateForm} from '../../utils/formValidations';
-import {popUpError, popUpSuccess} from '../../utils/popUpMessageHandler';
+import {popUpError, popUpSuccess, serverErrorPopUp} from '../../utils/popUpMessageHandler';
 import UserService from './../../services/userService';
 
 const defaultInputs = {
@@ -44,12 +44,11 @@ class Login extends Component{
                 },this.setState({redirectToHome:true}));
             }
         }).catch(err=>{
-            popUpError('Sorry something went wrong with the server.')
-            console.log(err)
+            serverErrorPopUp(err);
         })
     }
 
-    handleInputChange = (ev)=>{
+    handleInputChange = (ev, required, other)=>{
         const {name, value}=ev.target;
 
         this.setState((prevState)=>({
@@ -57,28 +56,16 @@ class Login extends Component{
                 ...prevState.data,
                 [name]:value,
             }
-        }))
-    }
-
-    validateInputOnBlur =(name, value, required, other)=>{
-        this.setState({
+        }), this.setState((prevState)=>({
             errors:{
-                ...this.state.errors,
+                ...prevState.errors,
                 [name]:validateInput(name, value, required, other)
             }
-        },() => this.setState({
-            isFormValid:validateForm(this.state.errors, this.state.data)
-        }))
+        }),() => this.setState((prevState)=>({
+            isFormValid:validateForm(prevState.errors, prevState.data)
+        }))))
     }
 
-    clearErrorsOnFocus=(name)=>{
-        this.setState({
-            errors:{
-                ...this.state.errors,
-                [name]:'',
-            }
-        })
-    }
     render(){
         const {data, errors, isFormValid, redirectToHome} = this.state;
         const {username, password} = data;
@@ -90,26 +77,22 @@ class Login extends Component{
         return (
         <form onSubmit={this.handleLogin}>
             <Input
-                label="User Name"
+                label="User Name *"
                 type="text"
                 id="username"
                 name="username"
                 value={username}
-                handleInputChange={this.handleInputChange}
-                validateInputOnBlur={()=>this.validateInputOnBlur('username', username, true)}
-                clearErrorsOnFocus={()=>this.clearErrorsOnFocus('username')}
+                handleInputChange={(ev)=>this.handleInputChange(ev, true)}
                 isValid={!errors.username}
                 errorMsg={errors.username}
             />
             <Input
-                label="Password"
+                label="Password *"
                 type="password"
                 id="password"
                 name="password"
                 value={password}
-                handleInputChange={this.handleInputChange}
-                validateInputOnBlur={()=>this.validateInputOnBlur('password', password, true)}
-                clearErrorsOnFocus={()=>this.clearErrorsOnFocus('password')}
+                handleInputChange={(ev)=>this.handleInputChange(ev, true)}
                 isValid={!errors.password}
                 errorMsg={errors.password}
             />

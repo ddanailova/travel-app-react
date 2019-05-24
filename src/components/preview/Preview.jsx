@@ -1,31 +1,30 @@
 import React, {Component, Fragment} from 'react';
-import {validateInput,validateForm } from '../../utils/formValidations.js';
-import {popUpError, popUpSuccess} from '../../utils/popUpMessageHandler';
+import TripService from './../../services/tripService';
+import {popUpError, popUpSuccess, serverErrorPopUp} from '../../utils/popUpMessageHandler';
 
 import './Preview.scss';
 
 class Preview extends Component{
-    constructor(props){
-        super(props);
-    }
-
     static isInputRequired = {
         destination:true, startDate:true, endDate:true, image:false, places:false, privacy:false
     }
-
+    static tripService = new TripService();
 
     handlePreview=(ev)=>{
         ev.preventDefault();
-        const {data,errors, updateStateParam,updateStateArrayParam, isFormValid}=this.props;
-        //validate data
-        Object.keys(data).map(inputName=>{
-            const isValid = validateInput(inputName, data[inputName], Preview.isInputRequired[inputName]);
-            updateStateArrayParam('errors', {[inputName]:isValid},updateStateParam('isFormValid',validateForm(errors, data)))
-        });
+        const {data, updateStateParam}=this.props;
+        Preview.tripService.create(data).then(res=>{
+            if(res.error){
+                popUpError(res.description)
+            }else{
+                popUpSuccess(`Record created! Congrats you are going to ${res.destination}.`);
+                updateStateParam('redirectToHome', true);
+            }
+        }).catch(err=>serverErrorPopUp(err));
     }
 
     render(){
-        const {actionType, data}=this.props;
+        const {actionType, data, isFormValid}=this.props;
         const {destination, startDate, endDate, image, places, privacy}=data;
         return (                
             
@@ -50,7 +49,7 @@ class Preview extends Component{
                     }
                     </ul>
                     <div  className="card-body text-center">
-                        <button className="btn btn-success card-link" onClick={this.handlePreview}>Looks Good!</button>
+                        <button className="btn btn-success card-link" onClick={this.handlePreview} disabled={!isFormValid} >Looks Good!</button>
                     </div>
                     </div>
                 </div>

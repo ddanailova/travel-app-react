@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Route, Switch, NavLink} from 'react-router-dom';
+import React from 'react';
+import {NavLink} from 'react-router-dom';
 
 import LoginWithUserContext from './../../components/login/Login';
 import Register from './../../components/register/Register';
@@ -10,7 +10,7 @@ const Authentication =(props)=>{
         
         const {path} = props.match;
         return(         
-            <div className="card text-center custom-shadow">
+            <div className="card auth text-center custom-shadow">
             <div className="card-header bg-dark">
             <ul className="nav nav-tabs ">
                 <li className="nav-item">

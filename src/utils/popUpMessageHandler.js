@@ -24,4 +24,9 @@ const popUpInfo =(message)=>{
       } )
 }
 
-export {popUpError, popUpSuccess, popUpInfo}
+const serverErrorPopUp = (err)=>{
+  popUpError('Sorry something went wrong with the server.')
+  console.log(err)
+}
+
+export {popUpError, popUpSuccess, popUpInfo, serverErrorPopUp}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import FormPreviewContainer from './../../components/common/form-preview-container/FormPreviewContainer';
+import FormPreviewContainer from './../../components/common/FormPreviewContainer';
 
 class CreateTrip extends Component {
     render(){

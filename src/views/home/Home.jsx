@@ -17,7 +17,7 @@ const Home =(props)=> {
     }
 
     return(
-        <div className="jumbotron guest-view">
+        <div className="jumbotron guest-view w-75 ml-auto mr-auto">
             <i className="fas fa-infinity"></i>
             <h1 className="display-4 font-weight-normal">Plan your next trip with us!</h1>
             <p className="lead">This app helps you plan your trip and offers you inspiring ideas for your new adventures.</p>
