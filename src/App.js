@@ -67,7 +67,7 @@ class App extends Component {
         </Switch>
         </Suspense>
         {
-          username ? <Footer/> : null
+          // username ? <Footer/> : null
         }
         <ToastContainer/>
         </UserProvider>

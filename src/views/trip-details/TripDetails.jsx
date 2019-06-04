@@ -42,6 +42,7 @@ class TripDetails extends Component{
             }
         }).catch(err=>serverErrorPopUp(err));
     }
+    
     render(){
         const {trip, isLoading}=this.state;
         if(isLoading || trip === null){

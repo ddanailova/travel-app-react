@@ -12,15 +12,28 @@ class Preview extends Component{
 
     handlePreview=(ev)=>{
         ev.preventDefault();
-        const {data, updateStateParam}=this.props;
-        Preview.tripService.create(data).then(res=>{
-            if(res.error){
-                popUpError(res.description)
-            }else{
-                popUpSuccess(`Record created! Congrats you are going to ${res.destination}.`);
-                updateStateParam('redirectToHome', true);
-            }
-        }).catch(err=>serverErrorPopUp(err));
+        const {data, updateStateParam, actionType}=this.props;
+        if(actionType==="create"){
+            Preview.tripService.create(data).then(res=>{
+                if(res.error){
+                    popUpError(res.description)
+                }else{
+                    popUpSuccess(`Record created! Congrats you are going to ${res.destination}.`);
+                    updateStateParam('redirectToHome', true);
+                }
+            }).catch(err=>serverErrorPopUp(err));
+        }else if(actionType==="edit"){
+            const newData = {...data};
+            delete newData._id
+            Preview.tripService.update(data._id, newData).then(res=>{
+                if(res.error){
+                    popUpError(res.description)
+                }else{
+                    popUpSuccess(`Record updated! Don't forget to back your bags for ${res.destination}.`);
+                    updateStateParam('redirectToHome', true);
+                }
+            }).catch(err=>serverErrorPopUp(err));
+        }
     }
 
     render(){

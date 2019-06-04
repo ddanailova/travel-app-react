@@ -1,10 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import FormPreviewContainer from './../../components/common/FormPreviewContainer';
 
-class CreateTrip extends Component {
-    render(){
+const CreateTrip =()=> {
         return(<FormPreviewContainer actionType="create"/>)
-    }
 }
 
 export default CreateTrip;

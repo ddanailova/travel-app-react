@@ -63,7 +63,7 @@ class TripsAll extends Component{
                 <h1 className="text-center mb-5 font-weight-bold">Trips List</h1> 
                 {
                     trips.length ?
-                        trips.map(trip=><div className="list-item bg-light custom-box" key={trip._id}><Card data={trip} cardType="tripList" ></Card></div>)
+                        trips.map(trip=><div className="list-item bg-light custom-box" key={trip._id}><Card data={trip} cardType="tripList" buttons={['details']}></Card></div>)
                     :
                         <div className="emptyView text-center ml-auto mr-auto">
                             <h3 >Sorry, you have not added any trips yet ...</h3>
