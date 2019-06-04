@@ -28,7 +28,6 @@ class Logout extends Component{
         })
     }
     componentDidMount(props){
-
         this.logout();
     }
     render(){

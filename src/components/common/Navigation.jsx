@@ -10,7 +10,7 @@ const Navigation =(props)=>{
         <nav className="navbar navbar-expand-lg fixed-top navbar navbar-dark bg-dark">
             <Link className="navbar-brand" to="/"><i className="fas fa-infinity"></i></Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
+                <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav">

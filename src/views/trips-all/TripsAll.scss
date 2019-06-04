@@ -1,0 +1,20 @@
+
+.container{
+    
+}
+.wrapper {
+    padding: 0 calc(100%/8);
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+h1 {
+    flex: 0 0 100%;
+}
+.list-item {
+    flex: 0 0 30%;
+    margin-bottom:3rem; 
+}
+.emptyView{
+   height: 65vh;
+}

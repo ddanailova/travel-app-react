@@ -16,10 +16,11 @@ import NotFound from './views/not-found/NotFound';
 import LogoutWithUserContext from './views/logout/Logout';
 
 const HomeWithUserContext = lazy(()=>import('./views/home/Home'));
-const EditTrip =lazy(()=>import('./views/edit-trip/EditTrip.jsx'));
-const CreateTrip =lazy(()=>import('./views/create-trip/CreateTrip.jsx'));
+const TripsAll =lazy(()=>import('./views/trips-all/TripsAll'));
+const TripDetails =lazy(()=>import('./views/trip-details/TripDetails'));
+const EditTrip =lazy(()=>import('./views/edit-trip/EditTrip'));
+const CreateTrip =lazy(()=>import('./views/create-trip/CreateTrip'));
 const Authentication = lazy(()=>import('./views/authentication/Authentication'));
-
 
 class App extends Component {
   constructor(props){
@@ -59,7 +60,9 @@ class App extends Component {
             <AnonimusRoute path='/register' render={(props)=>(<Authentication {...props} type="register"></Authentication>)}/>
             <UserRoute path='/trip/create' render={(props)=>(<CreateTrip {...props}/>)}/>
             <UserRoute path='/trip/edit/:id' render={(props)=>(<EditTrip {...props}/>)}/>
+            <UserRoute path='/trip/mine' render={(props)=>(<TripsAll {...props} listType="myTrips"/>)}/>
             <UserRoute path='/logout' render={(props)=>(<LogoutWithUserContext {...props}/>)}/>
+            <UserRoute path='/trip/details/:id' render={(props)=>(<TripDetails {...props}/>)}/>
             <Route component={NotFound}/>
         </Switch>
         </Suspense>
