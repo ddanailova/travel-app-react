@@ -2,43 +2,20 @@ import React, {Component} from 'react';
 import isEqual from "react-fast-compare";
 import {Redirect} from 'react-router-dom';
 import {validateInput, validateForm} from './../../utils/formValidations.js';
+import { DEFAULT_INPUTS, DEFAULT_ERROR_FIELDS, ERROR_FIELDS_FOR_VALID_FORM } from './../../static/formInputConstants.js';
 
 import TripForm from './../trip-form/TripForm';
 import Preview from './../preview/Preview';
 
-
-const defaultInputs = {
-    _id:'',
-    destination:'',
-    image:'',
-    places:'',
-    startDate:'',
-    endDate:'',
-    privacy:false
-}
-
-const defaultErrorFields = {
-    destination:'',
-    image:'',
-    startDate:'',
-    endDate:'',
-}
-
-const errorFieldsForValidForm = {
-    destination:null,
-    image:null,
-    startDate:null,
-    endDate:null,
-}
 
 class FormPreviewContainer extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            data:{...defaultErrorFields},
+            data:{...DEFAULT_INPUTS},
             initialData:{},
-            errors:{...defaultErrorFields},
+            errors:{...DEFAULT_ERROR_FIELDS},
             redirectToHome:false,
             isFormValid:false
         }
@@ -50,7 +27,7 @@ class FormPreviewContainer extends Component {
             return {
                 data:{...props.tripData},
                 initialData:{...props.tripData},
-                errors:{...errorFieldsForValidForm},
+                errors:{...ERROR_FIELDS_FOR_VALID_FORM},
                 redirectToHome:false,
                 isFormValid:true
             }

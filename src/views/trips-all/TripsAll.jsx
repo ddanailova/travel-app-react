@@ -22,33 +22,35 @@ class TripsAll extends Component{
     componentDidMount(){
         const {listType}=this.props;
         this.setState({isLoading:true});
+        const userId= localStorage.getItem('userId');
+        let filter ="";
 
         if(listType==='myTrips'){
-            const userId= localStorage.getItem('userId');
-            // const filter =`_acl:{creator:"${userId}"}`;
-            TripsAll.tripService.getAll().then(res=>{
-                if(res.error){
-                    popUpError(res.description)
-                }else{
-                    const filteredRes = res.reduce((acc, curr)=>{
-                        acc.push({
-                            _id:curr._id,
-                            destination:curr.destination,
-                            startDate:curr.startDate,
-                            endDate:curr.endDate,
-                            image:curr.image,
-                            places:curr.places,
-                            privacy:curr.privacy
-                        })
-                        return acc
-                    },[])
-                    this.setState({
-                        trips:filteredRes, 
-                        isLoading:false
-                    })
-                }
-            }).catch(err=>serverErrorPopUp(err));
+            filter =`"_acl":{"creator":"${userId}"}`;
         }
+        
+        TripsAll.tripService.getAll(filter).then(res=>{
+            if(res.error){
+                popUpError(res.description)
+            }else{
+                const filteredRes = res.reduce((acc, curr)=>{
+                    acc.push({
+                        _id:curr._id,
+                        destination:curr.destination,
+                        startDate:curr.startDate,
+                        endDate:curr.endDate,
+                        image:curr.image,
+                        places:curr.places,
+                        privacy:curr.privacy
+                    })
+                    return acc
+                },[])
+                this.setState({
+                    trips:filteredRes, 
+                    isLoading:false
+                })
+            }
+        }).catch(err=>serverErrorPopUp(err));
 
     }
 

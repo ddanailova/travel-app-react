@@ -13,8 +13,10 @@ class Preview extends Component{
     handlePreview=(ev)=>{
         ev.preventDefault();
         const {data, updateStateParam, actionType}=this.props;
+        const rawData = {...data};
+        delete rawData._id
         if(actionType==="create"){
-            Preview.tripService.create(data).then(res=>{
+            Preview.tripService.create(rawData).then(res=>{
                 if(res.error){
                     popUpError(res.description)
                 }else{
@@ -23,9 +25,7 @@ class Preview extends Component{
                 }
             }).catch(err=>serverErrorPopUp(err));
         }else if(actionType==="edit"){
-            const newData = {...data};
-            delete newData._id
-            Preview.tripService.update(data._id, newData).then(res=>{
+            Preview.tripService.update(data._id, rawData).then(res=>{
                 if(res.error){
                     popUpError(res.description)
                 }else{

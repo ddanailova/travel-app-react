@@ -1,6 +1,8 @@
 import React from 'react';
 import './Card.scss';
 import LinkButton from './../LinkButton';
+import ModalConfirmation from './../modal-confirmation/ModalConfirmation';
+
 
 const Card =(props)=>{
     const {data, cardType, buttons}=props;
@@ -9,7 +11,6 @@ const Card =(props)=>{
         cardStyleClass+="flex-row";
     }
     return(
-
         <div className={cardStyleClass}>
             <div className="card-header">
              {
@@ -33,7 +34,7 @@ const Card =(props)=>{
                         <ul className="list-group list-group-flush w-100">
                             <li className="list-group-item font-weight-bold" kay="title">Places to visit:</li>
                             {
-                                data.places.length ?
+                                (data.places && data.places.length) ?
                                     data.places.map(place=><li className="list-group-item" kay={data._id + place}>{place}</li>)
                                     : <li className="list-group-item" key="empty">No places to visit added</li>
                             }
@@ -41,9 +42,8 @@ const Card =(props)=>{
                 }
                 <div  className="card-body text-center">
                 {
-                    buttons ? (buttons.map(button=><LinkButton buttonType={button} itemId={data._id}/>)) : null
+                    buttons ? (buttons.map(button=><LinkButton buttonType={button} itemId={data._id} key={button}/>)) : null
                 }
-
                 </div>
             </div>
         </div>
