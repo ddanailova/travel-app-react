@@ -4,7 +4,7 @@ import LoadingSpinner from './../../components/common/loading-spinner/LoadingSpi
 
 import TripService from './../../services/tripService';
 import {popUpError, serverErrorPopUp} from '../../utils/popUpMessageHandler';
-import ModalConfirmation from '../../components/common/modal-confirmation/ModalConfirmation';
+
 
 class TripDetails extends Component{
     constructor(props){
@@ -51,7 +51,7 @@ class TripDetails extends Component{
         } 
         return (        
             <div className="translateY-13vh bg-light custom-box w-75 ml-auto mr-auto mb-5">
-                <Card {...this.props} data={trip} cardType="tripDetails" buttons={['edit','delete']}/>
+                <Card {...this.props} data={trip} cardType="tripDetails" buttons={['edit']} actionButtons={['delete']}/>
             </div>
         );
     }

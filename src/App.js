@@ -9,7 +9,6 @@ import NavigationWithUserContext from './components/common/Navigation';
 import LoadingSpinner from './components/common/loading-spinner/LoadingSpinner';
 import {AdminRoute, UserRoute, AnonimusRoute} from './components/common/AuthorizedRout';
 import {UserProvider, defaultUserState} from './components/contexts/userContext';
-import ModalConfirmation from './components/common/modal-confirmation/ModalConfirmation';
 
 import NotFound from './views/not-found/NotFound';
 import LogoutWithUserContext from './views/logout/Logout';
@@ -30,8 +29,6 @@ class App extends Component {
         ...defaultUserState,
         updateUser:this.updateUser
       },
-      // wasActionConfirmed:false,
-      redirectTo:''
     }
   }
 
@@ -44,24 +41,12 @@ class App extends Component {
     }), cb)
    }
 
-   confirmAction=(action, redirectTo)=>{
-      this.setState({
-        // wasActionConfirmed:true,
-        redirectTo:redirectTo
-      }, ()=>this.setState({
-        // wasActionConfirmed:false,
-        redirectTo:''
-      }))
-   }
+
 
   render(){
-    const {user, wasActionConfirmed, redirectTo} = this.state;
+    const {user} = this.state;
     const {username} = user;
-    if(redirectTo){
-      return(
-        <Redirect to={redirectTo}/>
-      )
-    }
+
     return (
       <div className="App">
         <UserProvider value={user}>
@@ -85,7 +70,6 @@ class App extends Component {
         {
           // username ? <Footer/> : null
         }
-        <ModalConfirmation confirmAction={this.confirmAction}/>
         <ToastContainer/>
         </UserProvider>
       </div>
